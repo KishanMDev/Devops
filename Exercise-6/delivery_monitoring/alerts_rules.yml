@@ -1,0 +1,11 @@
+groups:
+  - name: delivery_alerts
+    rules:
+      - alert: HighPendingDeliveries
+        expr: pending_deliveries > 15
+        for: 10s
+        labels:
+          severity: warning
+        annotations:
+          summary: "High volume of pending deliveries detected"
+          description: "Pending delivery orders have exceeded threshold (>15) for more than 10 seconds."
