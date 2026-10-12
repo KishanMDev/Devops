@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Creating virtual environment and installing dependencies...'
+                sh 'pip install --no-cache-dir -r requirements.txt'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Running unit test suite...'
+                sh 'python -m unittest test_app.py'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying application to mock production environment...'
+                sh 'mkdir -p /opt/deploy/python-flask-app && cp -r . /opt/deploy/python-flask-app'
+                echo 'Application deployed successfully to /opt/deploy/python-flask-app!'
+            }
+        }
+    }
+    post {
+        success {
+            echo 'Multi-stage CI/CD pipeline succeeded across all stages (Build, Test, Deploy)!'
+        }
+        failure {
+            echo 'Pipeline failed during one of the execution stages.'
+        }
+    }
+}
